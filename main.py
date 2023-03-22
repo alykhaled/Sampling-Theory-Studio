@@ -20,5 +20,24 @@ ax.set_ylabel('amplitude', fontsize=15)
 ax.set_facecolor((0.64,0.13,0.22)) # Changing the plot background color
 st.pyplot(fig)
 
+def unit_step(a,n):
+    units = []
+    for unit in n:
+        if unit < a:
+            units.append(0)
+        else:
+            units.append(1)
+    return (units)
+
+a = 0
+n = np.arange(0, 10,1)
+unit = unit_step(a, n)
+fig1, ax1 = plt.subplots()
+ax1.stem(n,unit)
+ax1.set_xlabel('time', fontsize=15)
+ax1.set_ylabel('amplitude', fontsize=15)
+st.pyplot(fig1)
+
+
 f_sampling = 2 * frequency
 
