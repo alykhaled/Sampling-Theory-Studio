@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import scipy.io.wavfile as wav
 import scipy.interpolate as interpolate
 import scipy.signal as signal
+import pandas as pd
 
 
 plt.style.use('dark_background')
@@ -19,11 +20,27 @@ with st.sidebar:
     
 # Siganl Sampling
 rate, data = wav.read(uploaded_file)
+st.write("Sampling Frequency: ", rate)
 sampling_freq= rate
 nyquist_freq = sampling_freq / 2
 sampling_rate = nyquist_freq
 samples = np.arange(0, len(data), sampling_rate)
 sampled_data = data[np.round(samples).astype(int)]
+
+# Make csv file of the original signal with time column using rate and second column using data
+time = np.arange(0, len(data)) / rate
+df = pd.DataFrame({'Time': time, 'Amplitude': data})
+df.to_csv('original_signal.csv', index=False)
+
+
+# Plot the original signal
+fig, ax = plt.subplots()
+ax.plot(data)
+ax.set_xlabel('Time', fontsize=15)
+ax.set_ylabel('Amplitude', fontsize=15)
+ax.set_title('Original Signal', fontsize=20)
+st.pyplot(fig)
+
 
 # Plotting sampled signal
 fig1, ax1 = plt.subplots()

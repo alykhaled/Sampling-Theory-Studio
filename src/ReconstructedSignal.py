@@ -3,6 +3,8 @@ import numpy as np
 import plotly.graph_objects as go
 from .Signal import Signal
 from .SampledSignal import SampledSignal
+import scipy.interpolate as interpolate
+import scipy.signal as signal
 
 class ReconstructedSignal(SampledSignal):
     def __init__(self, data, time, frequency, scroll=0, zoom=1):
@@ -19,6 +21,14 @@ class ReconstructedSignal(SampledSignal):
         """
         super().sample() # Sample the signal
         # TODO: Reconstruct the signal
+        new_len = len(self.data)
+        resampled_data = signal.resample(self.samplingPointsSignal, new_len)
+        interpolator = interpolate.interp1d(np.arange(0, new_len), resampled_data, kind='linear')
+        self.reconstructedSignal = interpolator(np.linspace(0, new_len -1, new_len))
+        self.reconstructedTime = self.time
+        # st.write(self.reconstructedSignal)
+        # st.write(self.reconstructedTime)
+
         
 
     def plotSampled(self):
@@ -28,7 +38,8 @@ class ReconstructedSignal(SampledSignal):
 
     def plot(self):
         # Draw Graph
+        self.reconstruct()
         plot = go.Figure()
         plot.add_trace(go.Scatter(x=self.reconstructedTime, y=self.reconstructedSignal, mode='lines', name="Reconstructed Signal"))
-        plot.update_layout(title="Reconstructed Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[0, self.zoom])
+        plot.update_layout(title="Reconstructed Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False,)
         return plot
