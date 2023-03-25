@@ -16,7 +16,6 @@ def sidebar():
         st.session_state.signal = {
             'Time': np.array([]),
             'Amplitude': np.array([]),
-            'frequency': 1,
         }
 
     if 'components' not in st.session_state:
@@ -29,23 +28,22 @@ def sidebar():
 
     # Composer Settings Controls
     st.sidebar.header('Composer Settings')
-    magnitude = st.sidebar.number_input('Magnitude', min_value=0, max_value=None, value=12, key='componentMagnitude')
-    frequency = st.sidebar.number_input('Frequency', min_value=0, max_value=None, value=25, key='componentFrequency')
+    magnitude = st.sidebar.number_input('Magnitude', min_value=1, max_value=None, value=1, key='componentMagnitude')
+    frequency = st.sidebar.number_input('Frequency', min_value=1, max_value=None, value=1, key='componentFrequency')
     name = st.sidebar.text_input('Name', key='componentName')
     if st.sidebar.button('Add Component', key='addComponent'):
         st.session_state.components.append(SignalComponent(magnitude, frequency, name))
         if st.session_state.signal['Time'].size == 0:
             st.session_state.signal['Time'] = np.arange(0, 1, 0.01)
         for component in st.session_state.components:
+            componentSignal = component.getSignal(st.session_state.signal['Time'])
             if st.session_state.signal['Amplitude'].size == 0:
-                componentSignal = component.getSignal(st.session_state.signal['Time'])
                 st.session_state.signal['Amplitude'] = componentSignal
             else:
-                componentSignal = component.getSignal(st.session_state.signal['Time'])
                 st.session_state.signal['Amplitude'] += component.getSignal(st.session_state.signal['Time'])
         st.experimental_rerun()
 
-    labels = [component.name for component in st.session_state.components]
+    labels = ["{} - {} HZ".format(component.name,component.frequency) for component in st.session_state.components]
     selectedComponent = st.sidebar.selectbox('Components', labels, key='signalComponents')
     if st.sidebar.button('Remove Component', key='removeComponent', disabled=selectedComponent is None):
         component = st.session_state.components[labels.index(selectedComponent)]
@@ -55,22 +53,24 @@ def sidebar():
 
     # Frequency Settings Controls
     st.sidebar.header('Frequency Settings')
-    maxFrequency = st.sidebar.number_input('Max Frequency', 0, 100, 1, key='maxFrequency')
+    maxFrequency = st.sidebar.number_input('Max Frequency', 1, 100, 5, key='maxFrequency')
     frequency = st.sidebar.slider('Frequency', 1, 4*maxFrequency,1, key='frequency', on_change=updateSignal)
 
     # Noise Settings Controls
     st.sidebar.header('Noise Settings')
-    noise = st.sidebar.slider('Noise SNR', 0, 100, 0, key='noise')
+    addNoise = st.sidebar.checkbox('Add Noise', key='addNoise')
+    noise = st.sidebar.slider('Noise SNR', 1, 30, 30, key='noise', disabled=not addNoise)
 
     # Graph Settings Controls
     st.sidebar.header('Graph Settings')
-    scroll = st.sidebar.slider('Scroll', 0, 100, 0, key='scroll')
-    zoom = st.sidebar.slider('Zoom', 1, 10, 1, key='zoom')
+    maxScroll = np.array(st.session_state.signal['Time'])[-1] if st.session_state.signal['Time'].size > 0 else 1.0
+    scroll = st.sidebar.slider('Scroll', 0.0, maxScroll, 0.0, key='scroll', disabled=True if st.session_state.components else False)
 
 
 
 def plotSignal():
-    reconstructed = ReconstructedSignal(st.session_state.signal['Amplitude'], st.session_state.signal['Time'], st.session_state.frequency)
+    reconstructed = ReconstructedSignal(st.session_state.signal['Amplitude'], np.array(st.session_state.signal['Time']), st.session_state.frequency, st.session_state.noise, st.session_state.addNoise, st.session_state.scroll)
+    reconstructed.addSignalNoise()
     plot = reconstructed.plotSampled()
     st.plotly_chart(plot, use_container_width=True)
     plot = reconstructed.plot()

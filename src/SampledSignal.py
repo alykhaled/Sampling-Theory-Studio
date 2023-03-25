@@ -4,8 +4,8 @@ import plotly.graph_objects as go
 from .Signal import Signal
 
 class SampledSignal(Signal):
-    def __init__(self, data, time, frequency, scroll=0, zoom=1):
-        super().__init__(data, time, frequency, scroll, zoom)
+    def __init__(self, data, time, frequency,addNoise, noise, scroll=0, zoom=1):
+        super().__init__(data, time, frequency,scroll,addNoise, noise,  zoom)
         self.samplingPointsTime = []
         self.samplingPointsSignal = []
 
@@ -14,9 +14,10 @@ class SampledSignal(Signal):
         Sample the signal using frequency variable
         return: samplingPointsTime, samplingPointsSignal
         """
-        for i in range(0, len(self.time), self.frequency):
-            self.samplingPointsTime.append(self.time[i])
-            self.samplingPointsSignal.append(self.data[i])
+        if len(self.time) == 0:
+            return
+        self.samplingPointsTime = np.arange(0, self.time[-1], 1/self.frequency)
+        self.samplingPointsSignal = np.interp(self.samplingPointsTime, self.time, self.data)
         
 
 
