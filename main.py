@@ -78,7 +78,8 @@ def plotSignal():
 
 
 def main():
-    st.title('Signal Viewer :heart:')
+    st.set_page_config(page_title='Signal Sampling Studio', page_icon=':heart:', layout='wide', initial_sidebar_state='auto')
+    st.title('Signal Sampling Studio :heart:')
     sidebar()
     plotSignal()
 
