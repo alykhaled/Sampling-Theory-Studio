@@ -27,7 +27,6 @@ class Signal():
         """
         if not self.addNoise:
             return
-        st.write(self.SNR)
         powerSignal = np.mean(self.data**2)
         powerNoise = powerSignal / (10**(self.SNR/10))
         noise = np.random.normal(scale=np.sqrt(powerNoise), size=self.data.shape)
