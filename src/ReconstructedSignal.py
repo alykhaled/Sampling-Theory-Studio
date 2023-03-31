@@ -29,12 +29,9 @@ class ReconstructedSignal(SampledSignal):
         self.reconstructedSignal = interpolator(np.linspace(0, new_len -1, new_len))
         self.reconstructedTime = self.time
 
-        
-
     def plotSampled(self):
         # Draw Graph
         return super().plot()
-
 
     def plot(self):
         # Draw Graph
@@ -42,4 +39,12 @@ class ReconstructedSignal(SampledSignal):
         plot = go.Figure()
         plot.add_trace(go.Scatter(x=self.reconstructedTime, y=self.reconstructedSignal, mode='lines', name="Reconstructed Signal"))
         plot.update_layout(title="Reconstructed Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[self.scroll, self.scroll + self.zoom],)
+        return plot
+
+    def plotDifference(self):
+        self.reconstruct()
+        plot = go.Figure()
+        plot.add_trace(go.Scatter(x=self.time, y=self.data, mode='lines', name="Original Signal"))
+        plot.add_trace(go.Scatter(x=self.reconstructedTime, y=self.reconstructedSignal, mode='lines', name="Reconstructed Signal"))
+        plot.update_layout(title="Difference between Original and Reconstructed Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[self.scroll, self.scroll + self.zoom],)
         return plot

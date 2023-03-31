@@ -34,13 +34,13 @@ def sidebar():
     if st.sidebar.button('Add Component', key='addComponent'):
         st.session_state.components.append(SignalComponent(magnitude, frequency, name))
         if st.session_state.signal['Time'].size == 0:
-            st.session_state.signal['Time'] = np.arange(0, 1, 0.01)
-        for component in st.session_state.components:
-            componentSignal = component.getSignal(st.session_state.signal['Time'])
-            if st.session_state.signal['Amplitude'].size == 0:
-                st.session_state.signal['Amplitude'] = componentSignal
-            else:
-                st.session_state.signal['Amplitude'] += component.getSignal(st.session_state.signal['Time'])
+            st.session_state.signal['Time'] = np.arange(0, 1, 0.001)
+        new_component = st.session_state.components[-1] 
+        new_component_signal = new_component.getSignal(st.session_state.signal['Time'])
+        if st.session_state.signal['Amplitude'].size == 0:
+            st.session_state.signal['Amplitude'] = new_component_signal
+        else:
+            st.session_state.signal['Amplitude'] += new_component_signal
         st.experimental_rerun()
 
     labels = ["{} - {} HZ".format(component.name,component.frequency) for component in st.session_state.components]
@@ -49,6 +49,7 @@ def sidebar():
         component = st.session_state.components[labels.index(selectedComponent)]
         st.session_state.components.remove(component)
         st.session_state.signal['Amplitude'] -= component.getSignal(st.session_state.signal['Time'])
+        st.session_state.signal['Amplitude'] = np.round(st.session_state.signal['Amplitude'],5)
         st.experimental_rerun()
 
     # Frequency Settings Controls
@@ -74,6 +75,8 @@ def plotSignal():
     plot = reconstructed.plotSampled()
     st.plotly_chart(plot, use_container_width=True)
     plot = reconstructed.plot()
+    st.plotly_chart(plot, use_container_width=True)
+    plot = reconstructed.plotDifference()
     st.plotly_chart(plot, use_container_width=True)
 
 
