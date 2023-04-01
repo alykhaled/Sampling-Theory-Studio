@@ -20,6 +20,9 @@ def sidebar():
 
     if 'components' not in st.session_state:
         st.session_state.components = []
+
+    if 'maxFrequency' not in st.session_state:
+        st.session_state.maxFrequency = 1
  
     st.sidebar.write('Upload Signal')
     uploaded_file = st.sidebar.file_uploader("Choose a file", type="csv")
@@ -54,8 +57,10 @@ def sidebar():
 
     # Frequency Settings Controls
     st.sidebar.header('Frequency Settings')
-    maxFrequency = st.sidebar.number_input('Max Frequency', 1, 100, 5, key='maxFrequency')
-    frequency = st.sidebar.slider('Frequency', 1, 4*maxFrequency,1, key='frequency', on_change=updateSignal)
+    maxFrequency = st.session_state['maxFrequency']
+    # st.write(maxFrequency)
+    # st.sidebar.write('Max Frequency: {}'.format(st.session_state.maxFrequency))
+    frequency = st.sidebar.slider('Frequency', 1, int(4*maxFrequency),1, key='frequency', on_change=updateSignal)
 
     # Noise Settings Controls
     st.sidebar.header('Noise Settings')
@@ -70,8 +75,12 @@ def sidebar():
 
 
 def plotSignal():
+    
     reconstructed = ReconstructedSignal(st.session_state.signal['Amplitude'], np.array(st.session_state.signal['Time']), st.session_state.frequency, st.session_state.noise, st.session_state.addNoise, st.session_state.scroll)
     reconstructed.addSignalNoise()
+    st.session_state.maxFrequency = reconstructed.getMaxFrequency()
+    
+    st.write('Max Frequency: {}'.format(st.session_state.maxFrequency))
     plot = reconstructed.plotSampled()
     st.plotly_chart(plot, use_container_width=True)
     plot = reconstructed.plot()
