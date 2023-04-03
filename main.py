@@ -75,9 +75,11 @@ def sidebar():
     #Save Button
     if st.sidebar.button('Save Composed Signal', key='saveInputSignal'):
         #save it to the data folder
-        df = pd.DataFrame({'Time': st.session_state.signal['Time'], 'Amplitude': st.session_state.signal['Amplitude']})
+        df = pd.DataFrame(st.session_state.signal)
+        #df=pd.DataFrame({'Time':st.session_state.signal['Time'], 'Amplitude':st.session_state.signal['Amplitude']})
         df.to_csv('data/composedSignal.csv', index=False)
         st.sidebar.success('Signal Saved')
+
 
 
        
