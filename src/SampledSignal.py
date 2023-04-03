@@ -20,7 +20,6 @@ class SampledSignal(Signal):
         self.samplingPointsSignal = np.interp(self.samplingPointsTime, self.time, self.data)
         
 
-
     def plot(self):
         # Draw Graph
         self.sample()
@@ -31,3 +30,25 @@ class SampledSignal(Signal):
         plot.add_trace(go.Scatter(x=self.samplingPointsTime, y=self.samplingPointsSignal, mode='markers', name='Sampled Signal', marker=dict(color='red')))
         plot.update_layout(title="Sampled Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[self.scroll, self.scroll + self.zoom], )
         return plot
+    
+    # def signal_csv(self):
+    #      with open('sampledSignal.txt', 'w') as f: 
+    #          f.write('Time,Amplitude')
+    #          for i in range(len(self.samplingPointsTime)):
+    #              f.write(str(self.samplingPointsTime[i]))
+    #              f.write(',')
+    #              f.write(str(self.samplingPointsSignal[i]))
+    #              f.write('\n')
+    #      f.close()
+    #      return f
+              
+    
+
+
+        
+
+
+
+                    
+
+        

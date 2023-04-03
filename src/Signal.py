@@ -53,10 +53,6 @@ class Signal():
         
         return max_frequency
 
-
-
-
-        
     def addSignalNoise(self):
         """
         Add noise to the signal

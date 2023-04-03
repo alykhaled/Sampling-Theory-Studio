@@ -72,6 +72,12 @@ def sidebar():
     maxScroll = np.array(st.session_state.signal['Time'])[-1] if st.session_state.signal['Time'].size > 0 else 1.0
     scroll = st.sidebar.slider('Scroll', 0.0, maxScroll, 0.0, key='scroll', disabled=True if st.session_state.components else False)
 
+    #Save Button
+    if st.sidebar.button('Save Composed Signal', key='saveInputSignal'):
+        df = pd.DataFrame(st.session_state.signal)
+        df.to_csv('composedSignal.csv', index=False)
+      
+
 
 
 def plotSignal():
