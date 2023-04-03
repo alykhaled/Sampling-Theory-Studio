@@ -8,3 +8,6 @@ class SignalComponent():
 
     def getSignal(self,time):
         return self.magnitude * np.sin(2 * np.pi * self.frequency * time)
+    
+
+    
