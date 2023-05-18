@@ -66,7 +66,7 @@ def sidebar():
     # else:
     #     frequency = st.sidebar.slider('Frequency', 1, 4*int(maxFrequency), 1, key='frequency', on_change=updateSignal)
         # frequency = frequency / maxFrequency
-    frequency = st.sidebar.slider('Frequency', 1, 4*int(maxFrequency), 1, key='frequency', on_change=updateSignal)
+    frequency = st.sidebar.slider('Frequency from 0 to 4 FMAX', 1, 4*int(maxFrequency), 1, key='frequency', on_change=updateSignal)
 
     # Noise Settings Controls
     st.sidebar.header('Noise Settings')
