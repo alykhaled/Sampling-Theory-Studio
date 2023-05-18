@@ -60,7 +60,7 @@ def sidebar():
     maxFrequency = st.session_state['maxFrequency']
     # st.write(maxFrequency)
     # st.sidebar.write('Max Frequency: {}'.format(st.session_state.maxFrequency))
-    frequency = st.sidebar.slider('Frequency', 1, int(4*maxFrequency),1, key='frequency', on_change=updateSignal)
+    frequency = st.sidebar.slider('Frequency from 0 to 4 FMAX', 1, int(4*maxFrequency),1, key='frequency', on_change=updateSignal)
 
     # Noise Settings Controls
     st.sidebar.header('Noise Settings')
