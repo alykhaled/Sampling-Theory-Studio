@@ -92,7 +92,7 @@ def plotSignal():
     reconstructed.addSignalNoise()
     st.session_state.maxFrequency = reconstructed.getMaxFrequency()
     
-    st.write('Max Frequency: {}'.format(st.session_state.maxFrequency))
+    st.write('Max Frequency: {}'.format(int(st.session_state.maxFrequency)))
     plot = reconstructed.plotSampled()
     st.plotly_chart(plot, use_container_width=True)
     plot = reconstructed.plot()

@@ -43,8 +43,11 @@ class ReconstructedSignal(SampledSignal):
 
     def plotDifference(self):
         self.reconstruct()
+        tempReconstructedSignal = np.round(self.reconstructedSignal, 4)
+        tempSignal = np.round(self.data, 4)
+        differenceSignal = tempReconstructedSignal - tempSignal
+        differenceTime = self.reconstructedTime
         plot = go.Figure()
-        plot.add_trace(go.Scatter(x=self.time, y=self.data, mode='lines', name="Original Signal"))
-        plot.add_trace(go.Scatter(x=self.reconstructedTime, y=self.reconstructedSignal, mode='lines', name="Reconstructed Signal"))
-        plot.update_layout(title="Difference between Original and Reconstructed Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[self.scroll, self.scroll + self.zoom],)
+        plot.add_trace(go.Scatter(x=differenceTime, y=differenceSignal, mode='lines', name="Difference"))
+        plot.update_layout(title="Difference", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[self.scroll, self.scroll + self.zoom],)
         return plot
