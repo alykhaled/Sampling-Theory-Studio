@@ -43,8 +43,8 @@ class ReconstructedSignal(SampledSignal):
 
     def plotDifference(self):
         self.reconstruct()
-        tempReconstructedSignal = np.round(self.reconstructedSignal, 4)
-        tempSignal = np.round(self.data, 4)
+        tempReconstructedSignal = np.round(self.reconstructedSignal, 2)
+        tempSignal = np.round(self.data, 2)
         differenceSignal = tempReconstructedSignal - tempSignal
         differenceTime = self.reconstructedTime
         plot = go.Figure()
