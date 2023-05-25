@@ -12,13 +12,22 @@ class ReconstructedSignal(SampledSignal):
         super().__init__(data, time, frequency, addNoise, noise, scroll, zoom)
         self.reconstructedTime = []
         self.reconstructedSignal = []
+    
 
     
     def reconstruct(self):
         super().sample()  # Sample the signal
         if len(self.time) == 0:
             return
-        
+        """
+        if self.frequency > (self.getMaxFrequency() * 2):
+            noise = self.addSignalNoise()
+            self.data -= noise
+            print("---------------------------")
+            print(noise)
+            print("---------Noise-------------")
+        """    
+            
         # TODO: Reconstruct the signal
         new_len = len(self.data)
         resampled_data = signal.resample(self.samplingPointsSignal, new_len)

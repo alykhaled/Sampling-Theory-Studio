@@ -65,4 +65,4 @@ class Signal():
         powerNoise = powerSignal / (10**(self.SNR/10))
         noise = np.random.normal(scale=np.sqrt(powerNoise), size=self.data.shape)
         self.data = self.data + noise
-        
+        return noise

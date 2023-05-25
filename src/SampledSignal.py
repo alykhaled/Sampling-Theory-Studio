@@ -18,7 +18,6 @@ class SampledSignal(Signal):
             return
         self.samplingPointsTime = np.arange(0, self.time[-1], 1/(self.frequency+1))
         self.samplingPointsSignal = np.interp(self.samplingPointsTime, self.time, self.data)
-        
 
     def plot(self):
         # Draw Graph
