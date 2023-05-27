@@ -71,7 +71,7 @@ def sidebar():
     # Noise Settings Controls
     st.sidebar.header('Noise Settings')
     addNoise = st.sidebar.checkbox('Add Noise', key='addNoise')
-    noise = st.sidebar.slider('Noise SNR', 20,30, key='noise', disabled=not addNoise)
+    noise = st.sidebar.slider('Noise SNR', 1,30,30, key='noise', disabled=not addNoise)
   
     
     
