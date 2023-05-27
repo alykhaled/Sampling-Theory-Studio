@@ -46,7 +46,7 @@ class SampledSignal(Signal):
 
         plot.add_trace(go.Scatter(x=self.time, y=data, mode='lines', name="Original Signal"))
         plot.add_trace(go.Scatter(x=self.samplingPointsTime, y=self.samplingPointsSignal, mode='markers', name='Sampled Signal', marker=dict(color='red')))
-        plot.update_layout(title="Sampled Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, )
+        plot.update_layout(title="Sampled Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[0, 5],)
         return plot
     
     # def signal_csv(self):
