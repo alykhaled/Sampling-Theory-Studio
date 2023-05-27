@@ -18,7 +18,7 @@ class SampledSignal(Signal):
             return
         if self.frequency == 0:
             self.frequency = 1
-            
+
         maxSamplingFrequency = len(self.time) / (max(self.time))
         # st.write(maxSamplingFrequency)
         length = len(self.time)
@@ -37,7 +37,11 @@ class SampledSignal(Signal):
         plot = go.Figure()
         # print(self.time)
         # print(self.data)
-        plot.add_trace(go.Scatter(x=self.time, y=self.data, mode='lines', name="Original Signal"))
+        data = self.data
+        if self.addNoise:
+            data = self.data + self.addSignalNoise()
+            
+        plot.add_trace(go.Scatter(x=self.time, y=data, mode='lines', name="Original Signal"))
         plot.add_trace(go.Scatter(x=self.samplingPointsTime, y=self.samplingPointsSignal, mode='markers', name='Sampled Signal', marker=dict(color='red')))
         plot.update_layout(title="Sampled Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[self.scroll, self.scroll + self.zoom], )
         return plot

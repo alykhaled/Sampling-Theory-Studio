@@ -27,14 +27,20 @@ class Signal():
         """
         if len(self.time) == 0:
             return 1
+        
+        data = self.data
+        if self.addNoise:
+            noise = self.addSignalNoise()
+            data = self.data - noise
+
         # Perform Fourier transform on signal
-        fft_data = np.fft.fft(self.data)
+        fft_data = np.fft.fft(data)
         
         # Calculate the total duration of the signal
         T = self.time[-1] - self.time[0]
         
         # Calculate the corresponding frequency values using total duration
-        freq = np.fft.fftfreq(len(self.data), d=T/len(self.data))
+        freq = np.fft.fftfreq(len(data), d=T/len(data))
         # freq = np.sort(freq)
         fft_data = np.abs(fft_data)
         # Round the frequency values to 2 decimal places
@@ -64,5 +70,5 @@ class Signal():
         powerSignal = np.mean(self.data**2)
         powerNoise = powerSignal / (10**(self.SNR/10))
         noise = np.random.normal(scale=np.sqrt(powerNoise), size=self.data.shape)
-        self.data = self.data + noise
+        # self.data = self.data + noise
         return noise
