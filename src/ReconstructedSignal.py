@@ -46,7 +46,7 @@ class ReconstructedSignal(SampledSignal):
         # divide self.reconstructedTime by 2
         self.reconstructedSignal = self.reconstructedSignal / 2
         plot.add_trace(go.Scatter(x=self.reconstructedTime, y=self.reconstructedSignal, mode='lines', name="Reconstructed Signal"))
-        plot.update_layout(title="Reconstructed Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[self.scroll, self.scroll + self.zoom],)
+        plot.update_layout(title="Reconstructed Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False,)
         return plot
 
     def plotDifference(self):

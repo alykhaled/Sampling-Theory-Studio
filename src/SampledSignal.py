@@ -19,6 +19,9 @@ class SampledSignal(Signal):
         if self.frequency == 0:
             self.frequency = 1
 
+        data = self.data
+        if self.addNoise:
+            data = self.data + self.addSignalNoise()
         maxSamplingFrequency = len(self.time) / (max(self.time))
         # st.write(maxSamplingFrequency)
         length = len(self.time)
@@ -27,7 +30,7 @@ class SampledSignal(Signal):
         for i in range(0, length, step):
             # st.write(i)
             self.samplingPointsTime = np.append(self.samplingPointsTime, self.time[i])
-            self.samplingPointsSignal = np.append(self.samplingPointsSignal, self.data[i])
+            self.samplingPointsSignal = np.append(self.samplingPointsSignal, data[i])
         # st.write(self.samplingPointsTime)
         return self.samplingPointsTime, self.samplingPointsSignal
 
@@ -40,10 +43,10 @@ class SampledSignal(Signal):
         data = self.data
         if self.addNoise:
             data = self.data + self.addSignalNoise()
-            
+
         plot.add_trace(go.Scatter(x=self.time, y=data, mode='lines', name="Original Signal"))
         plot.add_trace(go.Scatter(x=self.samplingPointsTime, y=self.samplingPointsSignal, mode='markers', name='Sampled Signal', marker=dict(color='red')))
-        plot.update_layout(title="Sampled Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, xaxis_range=[self.scroll, self.scroll + self.zoom], )
+        plot.update_layout(title="Sampled Signal", xaxis_title='Time', yaxis_title='Signal',showlegend=False, )
         return plot
     
     # def signal_csv(self):

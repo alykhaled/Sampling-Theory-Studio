@@ -37,7 +37,7 @@ def sidebar():
     if st.sidebar.button('Add Component', key='addComponent'):
         st.session_state.components.append(SignalComponent(magnitude, frequency, name))
         if st.session_state.signal['Time'].size == 0:
-            st.session_state.signal['Time'] = np.arange(0, 1, 0.001)
+            st.session_state.signal['Time'] = np.arange(0, 5, 0.001)
         new_component = st.session_state.components[-1] 
         new_component_signal = new_component.getSignal(st.session_state.signal['Time'])
         if st.session_state.signal['Amplitude'].size == 0:
