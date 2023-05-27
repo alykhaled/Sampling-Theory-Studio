@@ -96,7 +96,7 @@ def sidebar():
 
 def plotSignal():
     
-    reconstructed = ReconstructedSignal(st.session_state.signal['Amplitude'], np.array(st.session_state.signal['Time']), st.session_state.frequency, st.session_state.noise, st.session_state.addNoise, st.session_state.scroll)
+    reconstructed = ReconstructedSignal(st.session_state.signal['Amplitude'], np.array(st.session_state.signal['Time']), st.session_state.frequency-1, st.session_state.noise, st.session_state.addNoise, st.session_state.scroll)
     reconstructed.addSignalNoise()
     st.session_state.maxFrequency = reconstructed.getMaxFrequency()
     

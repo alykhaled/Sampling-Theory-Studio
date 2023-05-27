@@ -6,8 +6,8 @@ from .Signal import Signal
 class SampledSignal(Signal):
     def __init__(self, data, time, frequency,addNoise, noise, scroll=0, zoom=1):
         super().__init__(data, time, frequency,scroll,addNoise, noise,  zoom)
-        self.samplingPointsTime = []
-        self.samplingPointsSignal = []
+        self.samplingPointsTime = np.array([])
+        self.samplingPointsSignal = np.array([])
 
     def sample(self):
         """
@@ -16,8 +16,20 @@ class SampledSignal(Signal):
         """
         if len(self.time) == 0:
             return
-        self.samplingPointsTime = np.arange(0, self.time[-1], 1/(self.frequency+1))
-        self.samplingPointsSignal = np.interp(self.samplingPointsTime, self.time, self.data)
+        if self.frequency == 0:
+            self.frequency = 1
+            
+        maxSamplingFrequency = len(self.time) / (max(self.time))
+        # st.write(maxSamplingFrequency)
+        length = len(self.time)
+        step = round(maxSamplingFrequency / self.frequency)
+
+        for i in range(0, length, step):
+            # st.write(i)
+            self.samplingPointsTime = np.append(self.samplingPointsTime, self.time[i])
+            self.samplingPointsSignal = np.append(self.samplingPointsSignal, self.data[i])
+        # st.write(self.samplingPointsTime)
+        return self.samplingPointsTime, self.samplingPointsSignal
 
     def plot(self):
         # Draw Graph
