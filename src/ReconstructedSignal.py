@@ -21,9 +21,7 @@ class ReconstructedSignal(SampledSignal):
             return
         
         # Interpolate the signal
-        T = self.samplingPointsTime[1] - self.samplingPointsTime[0]
-        st.write(self.samplingPointsTime[1], self.samplingPointsTime[0])
-        
+        T = self.samplingPointsTime[1] - self.samplingPointsTime[0]        
         temp = self.samplingPointsTime[:, np.newaxis]
         sincM = np.tile(self.time, (len(self.samplingPointsTime), 1)) - np.tile(temp, (1, len(self.time)))
         sincM = sincM / T
